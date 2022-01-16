@@ -38,12 +38,17 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
     for(auto node : current_node->neighbors){
         node->parent = current_node;
         node->h_value = CalculateHValue(node);
+        node->g_value = current_node->g_value + node->distance(*current_node);
         node->visited = true;
         open_list.push_back(node);
     }
 }
 
-
+bool RoutePlanner::compare(const RouteModel::Node *nodeA, const RouteModel::Node *nodeB){
+    float f1 = nodeA->h_value + nodeA->g_value;
+    float f2 = nodeB->h_value + nodeB->g_value;
+    return f1 > f2;
+}
 // TODO 5: Complete the NextNode method to sort the open list and return the next node.
 // Tips:
 // - Sort the open_list according to the sum of the h value and g value.
@@ -52,7 +57,10 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
 // - Return the pointer.
 
 RouteModel::Node *RoutePlanner::NextNode() {
-    
+    std::sort(open_list.begin(), open_list.end(), RoutePlanner::compare);
+    RouteModel::Node *node_pointer = open_list.back();
+    open_list.pop_back();
+    return node_pointer;
 }
 
 
