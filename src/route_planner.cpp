@@ -44,7 +44,7 @@ void RoutePlanner::AddNeighbors(RouteModel::Node *current_node) {
     }
 }
 
-bool RoutePlanner::compare(const RouteModel::Node *nodeA, const RouteModel::Node *nodeB){
+bool compare(const RouteModel::Node *nodeA, const RouteModel::Node *nodeB){
     float f1 = nodeA->h_value + nodeA->g_value;
     float f2 = nodeB->h_value + nodeB->g_value;
     return f1 > f2;
@@ -57,7 +57,7 @@ bool RoutePlanner::compare(const RouteModel::Node *nodeA, const RouteModel::Node
 // - Return the pointer.
 
 RouteModel::Node *RoutePlanner::NextNode() {
-    std::sort(open_list.begin(), open_list.end(), RoutePlanner::compare);
+    std::sort(open_list.begin(), open_list.end(), compare);
     RouteModel::Node *node_pointer = open_list.back();
     open_list.pop_back();
     return node_pointer;
